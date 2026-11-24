@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'Data juri atau nominator tidak lengkap' }, { status: 400 });
     }
 
-    const updatedStore = saveSingleSubmission(submission);
+    const updatedStore = await saveSingleSubmission(submission);
     return NextResponse.json({ success: true, submission, totalSubmissions: updatedStore.submissions.length });
   } catch (err) {
     console.error('API /api/scores error:', err);

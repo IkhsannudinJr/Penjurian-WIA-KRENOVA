@@ -5,14 +5,14 @@ import { JudgeScoreSubmission } from '@/types';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const data = readStore();
+  const data = await readStore();
   return NextResponse.json(data);
 }
 
 export async function POST(req: Request) {
   try {
     const body: Partial<AppStoreData> = await req.json();
-    const current = readStore();
+    const current = await readStore();
 
     // Safely update judges and nominators if provided
     const mergedJudges = body.judges && body.judges.length > 0 ? body.judges : current.judges;
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       lastUpdated: new Date().toISOString()
     };
 
-    writeStore(updatedData);
+    await writeStore(updatedData);
     return NextResponse.json({ success: true, data: updatedData });
   } catch (error) {
     console.error('API /api/state POST error:', error);

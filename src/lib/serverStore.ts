@@ -11,11 +11,19 @@ export interface AppStoreData {
   lastUpdated: string;
 }
 
-const DATA_DIR = path.join(process.cwd(), 'data');
+// Upstash Redis / Vercel KV Cloud Configuration
+const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+const KV_KEY = 'wia_krenova_store_2026';
+
+// Detect serverless environment (e.g., Vercel, AWS Lambda)
+const isServerless = process.env.VERCEL === '1' || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+const DATA_DIR = isServerless ? path.join('/tmp', 'wia-data') : path.join(process.cwd(), 'data');
 const BACKUP_DIR = path.join(DATA_DIR, 'backups');
 const DATA_FILE = path.join(DATA_DIR, 'app-store.json');
+const BUNDLED_FILE = path.join(process.cwd(), 'data', 'app-store.json');
 
-// In-memory cache to guarantee data is never wiped out during concurrent reads/writes
+// In-memory cache to guarantee fast response
 let memoryCache: AppStoreData | null = null;
 
 export function getInitialStoreData(): AppStoreData {
@@ -28,23 +36,85 @@ export function getInitialStoreData(): AppStoreData {
 }
 
 function ensureDirectoriesExist() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(BACKUP_DIR)) {
-    fs.mkdirSync(BACKUP_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(BACKUP_DIR)) {
+      fs.mkdirSync(BACKUP_DIR, { recursive: true });
+    }
+  } catch (err) {
+    // Gracefully handle read-only environments
   }
 }
 
-export function readStore(): AppStoreData {
+// Helper to interact with Upstash / Vercel KV REST API
+async function readFromKV(): Promise<AppStoreData | null> {
+  if (!KV_URL || !KV_TOKEN) return null;
+  try {
+    const url = `${KV_URL}/get/${KV_KEY}`;
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${KV_TOKEN}` },
+      cache: 'no-store'
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (!json.result) return null;
+    const parsed = typeof json.result === 'string' ? JSON.parse(json.result) : json.result;
+    return parsed as AppStoreData;
+  } catch (err) {
+    console.error('Failed to read from Cloud KV:', err);
+    return null;
+  }
+}
+
+async function writeToKV(data: AppStoreData): Promise<boolean> {
+  if (!KV_URL || !KV_TOKEN) return false;
+  try {
+    const url = `${KV_URL}/set/${KV_KEY}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${KV_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Failed to write to Cloud KV:', err);
+    return false;
+  }
+}
+
+export async function readStore(): Promise<AppStoreData> {
+  // 1. If Cloud KV is configured (e.g. on Vercel), prioritize it
+  if (KV_URL && KV_TOKEN) {
+    const cloudData = await readFromKV();
+    if (cloudData && cloudData.judges && cloudData.judges.length >= 9) {
+      memoryCache = cloudData;
+      return cloudData;
+    }
+  }
+
   ensureDirectoriesExist();
 
   try {
     if (!fs.existsSync(DATA_FILE)) {
-      const initial = memoryCache || getInitialStoreData();
-      writeStore(initial);
-      memoryCache = initial;
-      return initial;
+      let seedData: AppStoreData = getInitialStoreData();
+      if (fs.existsSync(BUNDLED_FILE)) {
+        try {
+          const bundledContent = fs.readFileSync(BUNDLED_FILE, 'utf-8');
+          if (bundledContent && bundledContent.trim().length > 0) {
+            seedData = JSON.parse(bundledContent);
+          }
+        } catch (bErr) {
+          // fallback
+        }
+      }
+      await writeStore(seedData);
+      memoryCache = seedData;
+      return seedData;
     }
 
     const content = fs.readFileSync(DATA_FILE, 'utf-8');
@@ -57,7 +127,6 @@ export function readStore(): AppStoreData {
 
     const parsed: AppStoreData = JSON.parse(content);
 
-    // Sync judges & nominators if empty
     if (!parsed.judges || parsed.judges.length < 9) {
       parsed.judges = INITIAL_JUDGES;
     }
@@ -80,11 +149,10 @@ export function readStore(): AppStoreData {
       });
     }
 
-    // Keep memory cache updated
     memoryCache = parsed;
 
     if (hasChanges) {
-      writeStore(parsed);
+      await writeStore(parsed);
     }
 
     return parsed;
@@ -93,54 +161,44 @@ export function readStore(): AppStoreData {
     if (memoryCache) {
       return memoryCache;
     }
-    // Check if backup exists
-    try {
-      const backupFile = path.join(BACKUP_DIR, 'app-store.backup.json');
-      if (fs.existsSync(backupFile)) {
-        const backupContent = fs.readFileSync(backupFile, 'utf-8');
-        const backupParsed: AppStoreData = JSON.parse(backupContent);
-        memoryCache = backupParsed;
-        return backupParsed;
-      }
-    } catch (bErr) {
-      console.error('Backup recovery failed:', bErr);
-    }
     return getInitialStoreData();
   }
 }
 
-export function writeStore(data: AppStoreData): void {
+export async function writeStore(data: AppStoreData): Promise<void> {
+  data.lastUpdated = new Date().toISOString();
+  memoryCache = data;
+
+  // 1. Write to Cloud KV if available
+  if (KV_URL && KV_TOKEN) {
+    await writeToKV(data);
+  }
+
+  // 2. Also try writing to local disk or /tmp
   ensureDirectoriesExist();
 
   try {
-    data.lastUpdated = new Date().toISOString();
-    memoryCache = data;
-
     const jsonString = JSON.stringify(data, null, 2);
-
-    // Safe atomic write: write to temp file then rename
     const tempFile = `${DATA_FILE}.${Date.now()}.tmp`;
     fs.writeFileSync(tempFile, jsonString, 'utf-8');
     fs.renameSync(tempFile, DATA_FILE);
 
-    // Also update a persistent rolling backup
     const backupFile = path.join(BACKUP_DIR, 'app-store.backup.json');
     fs.writeFileSync(backupFile, jsonString, 'utf-8');
   } catch (err) {
-    console.error('Error writing store file, attempting direct write:', err);
     try {
       fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
     } catch (wErr) {
-      console.error('Direct write also failed:', wErr);
+      // Ignored on read-only environments
     }
   }
 }
 
 /**
- * Atomic save submission helper to prevent multi-judge race conditions
+ * Atomic save submission helper
  */
-export function saveSingleSubmission(submission: JudgeScoreSubmission): AppStoreData {
-  const store = readStore();
+export async function saveSingleSubmission(submission: JudgeScoreSubmission): Promise<AppStoreData> {
+  const store = await readStore();
 
   const existingIndex = store.submissions.findIndex(
     (s) => s.judgeId === submission.judgeId && s.nominatorId === submission.nominatorId
@@ -158,6 +216,6 @@ export function saveSingleSubmission(submission: JudgeScoreSubmission): AppStore
     store.submissions.push(submissionToSave);
   }
 
-  writeStore(store);
+  await writeStore(store);
   return store;
 }

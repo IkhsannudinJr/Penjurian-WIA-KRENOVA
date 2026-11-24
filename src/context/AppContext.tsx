@@ -244,10 +244,29 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   );
 
   const resetData = async () => {
+    // 1. Immediately wipe all cached submissions and drafts from browser localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        const keysToRemove: string[] = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.startsWith('wia_sub_') || key.startsWith('wia_draft_'))) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach((k) => localStorage.removeItem(k));
+      } catch (e) {
+        console.warn('Failed to clear localStorage keys', e);
+      }
+    }
+
+    // 2. Clear in-memory React state immediately
+    setSubmissions([]);
+
+    // 3. Request server to reset
     try {
       const res = await fetch('/api/reset', { method: 'POST' });
       if (res.ok) {
-        setSubmissions([]);
         await refreshData();
       }
     } catch (err) {

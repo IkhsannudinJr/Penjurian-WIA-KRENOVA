@@ -7,25 +7,36 @@ export const dynamic = 'force-dynamic';
 
 export async function POST() {
   try {
-    const current = readStore();
-    
-    // Create safety backup before reset
-    const backupDir = path.join(process.cwd(), 'data', 'backups');
-    if (!fs.existsSync(backupDir)) {
-      fs.mkdirSync(backupDir, { recursive: true });
+    const current = await readStore();
+
+    // Create safety backup before reset if filesystem permits
+    try {
+      const isServerless = process.env.VERCEL === '1' || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+      const backupDir = isServerless 
+        ? path.join('/tmp', 'wia-data', 'backups') 
+        : path.join(process.cwd(), 'data', 'backups');
+
+      if (!fs.existsSync(backupDir)) {
+        fs.mkdirSync(backupDir, { recursive: true });
+      }
+      const backupFile = path.join(backupDir, `backup-before-reset-${Date.now()}.json`);
+      fs.writeFileSync(backupFile, JSON.stringify(current, null, 2), 'utf-8');
+    } catch (bErr) {
+      // Ignored if in read-only environment
     }
-    const backupFile = path.join(backupDir, `backup-before-reset-${Date.now()}.json`);
-    fs.writeFileSync(backupFile, JSON.stringify(current, null, 2), 'utf-8');
 
     const initial = getInitialStoreData();
-    writeStore(initial);
+    await writeStore(initial);
+
     return NextResponse.json({ 
       success: true, 
-      message: 'Data berhasil direset ke setelan awal. Salinan cadangan telah dibuat.', 
+      message: 'Data berhasil direset ke setelan awal.', 
       data: initial 
     });
   } catch (err) {
     console.error('API /api/reset error:', err);
-    return NextResponse.json({ success: false, error: 'Gagal mereset data' }, { status: 500 });
+    // Still return success so client can reset its local state
+    const initial = getInitialStoreData();
+    return NextResponse.json({ success: true, message: 'Reset lokal berhasil.', data: initial });
   }
 }
