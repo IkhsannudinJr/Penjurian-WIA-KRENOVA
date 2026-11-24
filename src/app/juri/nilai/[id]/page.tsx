@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useApp } from '@/context/AppContext';
@@ -20,7 +20,8 @@ import {
   ChevronRight,
   UserCheck,
   Clock,
-  MapPin
+  MapPin,
+  SendHorizontal
 } from 'lucide-react';
 
 export default function NilaiPage() {
@@ -35,18 +36,49 @@ export default function NilaiPage() {
   const [isLocked, setIsLocked] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
+  const [saveMessage, setSaveMessage] = useState<string>('');
 
-  // Load existing submission if any
+  // Flag to prevent background polling from resetting user input while on this page
+  const hasInitialized = useRef<boolean>(false);
+
+  // Load existing submission or local draft ONCE on page mount / nominator change
   useEffect(() => {
     if (currentJudge && nominatorId) {
+      hasInitialized.current = false;
       const existing = getSubmission(currentJudge.id, nominatorId);
-      if (existing) {
-        setScores(existing.scores || {});
-        setNotes(existing.notes || '');
-        setIsLocked(existing.isLocked || false);
+
+      // Check local storage draft
+      let draftScores: Record<string, number> | null = null;
+      let draftNotes: string | null = null;
+      if (typeof window !== 'undefined') {
+        const localDraft = localStorage.getItem(`wia_draft_${currentJudge.id}_${nominatorId}`);
+        if (localDraft) {
+          try {
+            const parsed = JSON.parse(localDraft);
+            draftScores = parsed.scores;
+            draftNotes = parsed.notes;
+          } catch (e) {
+            // invalid draft
+          }
+        }
       }
+
+      if (existing) {
+        setScores(existing.scores || draftScores || {});
+        setNotes(existing.notes !== undefined ? existing.notes : (draftNotes || ''));
+        setIsLocked(existing.isLocked || false);
+      } else if (draftScores) {
+        setScores(draftScores);
+        setNotes(draftNotes || '');
+        setIsLocked(false);
+      } else {
+        setScores({});
+        setNotes('');
+        setIsLocked(false);
+      }
+      hasInitialized.current = true;
     }
-  }, [currentJudge, nominatorId, getSubmission]);
+  }, [currentJudge?.id, nominatorId]);
 
   if (!nominator) {
     return (
@@ -92,14 +124,47 @@ export default function NilaiPage() {
 
   const isComplete = totalItemsToScore > 0 && scoredItemsCount === totalItemsToScore;
 
+  // Auto-backup to localStorage whenever scores change
   const handleScoreChange = (id: string, value: number) => {
     if (isLocked) return;
-    setScores(prev => ({ ...prev, [id]: value }));
+    const newScores = { ...scores, [id]: value };
+    setScores(newScores);
     setSaveSuccess(false);
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(
+          `wia_draft_${currentJudge.id}_${nominator.id}`,
+          JSON.stringify({ scores: newScores, notes, updatedAt: Date.now() })
+        );
+      } catch (err) {
+        // ignore
+      }
+    }
   };
 
-  const handleSave = async (lockSubmission: boolean = false) => {
+  const handleNotesChange = (val: string) => {
+    if (isLocked) return;
+    setNotes(val);
+    setSaveSuccess(false);
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(
+          `wia_draft_${currentJudge.id}_${nominator.id}`,
+          JSON.stringify({ scores, notes: val, updatedAt: Date.now() })
+        );
+      } catch (err) {
+        // ignore
+      }
+    }
+  };
+
+  // SINGLE UNIFIED SUBMIT ACTION (Hanya 1 tombol saja, tanpa tombol ganda/duplikat)
+  const handleSingleSubmit = async () => {
     setIsSaving(true);
+    setSaveSuccess(false);
+
     const submissionData: JudgeScoreSubmission = {
       id: `sub-${currentJudge.id}-${nominator.id}`,
       judgeId: currentJudge.id,
@@ -111,16 +176,29 @@ export default function NilaiPage() {
       notes,
       totalWeightedScore: total, // Scale 0..500
       submittedAt: new Date().toISOString(),
-      isLocked: lockSubmission
+      isLocked: isComplete // Otomatis terkunci jika kriteria sudah 100% lengkap
     };
 
     const success = await saveScore(submissionData);
     setIsSaving(false);
+
     if (success) {
-      setIsLocked(lockSubmission);
+      if (isComplete) {
+        setIsLocked(true);
+        setSaveMessage(`Nilai berhasil dikirim & tersimpan permanen! Total: ${total.toFixed(0)} / 500 Poin.`);
+      } else {
+        setSaveMessage(`Nilai sementara berhasil disimpan (${scoredItemsCount} dari ${totalItemsToScore} kriteria terisi).`);
+      }
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 4000);
+      setTimeout(() => setSaveSuccess(false), 5000);
+    } else {
+      alert('Gagal mengirim nilai ke server. Nilai tetap tersimpan aman di perangkat Anda.');
     }
+  };
+
+  const handleUnlock = () => {
+    setIsLocked(false);
+    setSaveSuccess(false);
   };
 
   // Find next nominator in same room
@@ -211,8 +289,8 @@ export default function NilaiPage() {
         )}
       </div>
 
-      {/* Floating / Sticky Live Score Summary */}
-      <div className="sticky top-20 z-40 bg-slate-900/95 backdrop-blur-md text-white p-4 sm:p-5 rounded-2xl shadow-xl border border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Floating / Sticky Live Score Summary with SINGLE ACTION BUTTON */}
+      <div className="sticky top-20 z-40 bg-slate-900 text-white p-4 sm:p-5 rounded-2xl shadow-xl border border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-xl bg-amber-400 text-slate-950 font-black flex flex-col items-center justify-center shadow-md shrink-0">
             <span className="text-xl font-black leading-none">{total.toFixed(0)}</span>
@@ -220,58 +298,54 @@ export default function NilaiPage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-300">TOTAL POIN DEWAN JURI</span>
+              <span className="text-xs font-bold text-slate-300">TOTAL NILAI JURI</span>
               <span className="text-[10px] bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">
                 Maksimal 500 Poin
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Kalkulasi: Σ (Skor 1..5 × Bobot). Progres: <strong className="text-white">{scoredItemsCount} dari {totalItemsToScore}</strong> kriteria terisi.
+              Progres Pengisian: <strong className={isComplete ? 'text-emerald-400' : 'text-amber-300'}>{scoredItemsCount} dari {totalItemsToScore} kriteria</strong> {isComplete ? '✓ Lengkap' : '(Belum Lengkap)'}
             </p>
           </div>
         </div>
 
-        {/* Action buttons inside bar */}
-        <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto pt-2 sm:pt-0 border-t border-slate-800 sm:border-t-0">
+        {/* SATU TOMBOL SAJA (TIDAK ADA TOMBOL DUPLIKAT/BINGUNG) */}
+        <div className="flex items-center justify-end gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t border-slate-800 sm:border-t-0">
           {isLocked ? (
             <button
-              onClick={() => setIsLocked(false)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition-colors"
+              type="button"
+              onClick={handleUnlock}
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-amber-300 border border-slate-700 transition-all shadow-md w-full sm:w-auto"
             >
-              <Unlock className="w-3.5 h-3.5 text-amber-400" />
-              <span>Buka Kunci</span>
+              <Unlock className="w-4 h-4 text-amber-400" />
+              <span>Buka Kunci Nilai (Edit)</span>
             </button>
           ) : (
             <button
-              onClick={() => handleSave(false)}
+              type="button"
+              onClick={handleSingleSubmit}
               disabled={isSaving}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition-colors"
+              className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black transition-all shadow-lg w-full sm:w-auto ${
+                isSaving
+                  ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                  : isComplete
+                  ? 'bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 shadow-amber-500/20 active:scale-95'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20 active:scale-95'
+              }`}
             >
-              <Save className="w-3.5 h-3.5" />
-              <span>{isSaving ? 'Menyimpan...' : 'Simpan Draf'}</span>
+              <SendHorizontal className="w-4 h-4" />
+              <span>{isSaving ? 'Menyimpan ke Server...' : 'Kirim & Simpan Nilai'}</span>
             </button>
           )}
-
-          <button
-            onClick={() => handleSave(true)}
-            disabled={isSaving || !isComplete}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md ${
-              isComplete
-                ? 'bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 shadow-amber-500/20'
-                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-            }`}
-          >
-            <Lock className="w-3.5 h-3.5" />
-            <span>Kunci & Kirim Nilai</span>
-          </button>
         </div>
       </div>
 
+      {/* Notification Toast */}
       {saveSuccess && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl flex items-center gap-3 animate-fade-in">
+        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl flex items-center gap-3 animate-fade-in shadow-sm">
           <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
           <p className="text-xs sm:text-sm font-semibold">
-            Nilai untuk {nominator.title || nominator.name} berhasil tersimpan ke sistem penjurian! Total Poin: <strong>{total.toFixed(0)} / 500</strong>.
+            {saveMessage}
           </p>
         </div>
       )}
@@ -320,7 +394,7 @@ export default function NilaiPage() {
                     Bobot: {crit.weight}
                   </span>
                   <div className="text-right">
-                    <span className="text-xs text-slate-400 block font-medium">Poin Terbobot (Skor × Bobot)</span>
+                    <span className="text-xs text-slate-400 block font-medium">Poin Terbobot</span>
                     <span className="text-sm font-black text-slate-900">
                       {breakdownItem ? breakdownItem.weightedScore.toFixed(0) : '0'} / {crit.weight * 5}
                     </span>
@@ -443,44 +517,42 @@ export default function NilaiPage() {
             disabled={isLocked}
             placeholder="Tuliskan catatan, pertimbangan nilai, atau rekomendasi untuk peserta di sini..."
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={(e) => handleNotesChange(e.target.value)}
             className="w-full p-4 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-y"
           />
         </div>
       </div>
 
-      {/* Bottom Completion Banner & Next Button */}
+      {/* Bottom Completion Card & Next Navigation (Tanpa tombol duplikat) */}
       <div className="p-6 bg-gradient-to-r from-blue-900 to-indigo-900 rounded-3xl text-white flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
         <div>
           <h3 className="text-lg font-bold">
             {isComplete ? 'Seluruh Aspek Penilaian Telah Terisi Lengkap!' : 'Lengkapi Seluruh Kriteria Penilaian'}
           </h3>
           <p className="text-xs text-blue-200 mt-1">
-            Total Poin Dewan Juri: <span className="font-black text-amber-300 text-base">{total.toFixed(0)} / 500 Poin</span>
+            Total Nilai Juri: <span className="font-black text-amber-300 text-base">{total.toFixed(0)} / 500 Poin</span>
+            <span className="ml-2 text-white/70">
+              ({scoredItemsCount} dari {totalItemsToScore} kriteria)
+            </span>
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          <button
-            onClick={() => handleSave(true)}
-            disabled={isSaving || !isComplete}
-            className={`px-5 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg ${
-              isComplete
-                ? 'bg-amber-400 hover:bg-amber-500 text-slate-950 shadow-amber-400/20'
-                : 'bg-white/10 text-white/40 cursor-not-allowed'
-            }`}
-          >
-            <Lock className="w-4 h-4" />
-            <span>Kunci & Simpan Nilai</span>
-          </button>
-
-          {nextNominator && (
+          {nextNominator ? (
             <Link
               href={`/juri/nilai/${nextNominator.id}`}
-              className="px-4 py-3 rounded-xl font-semibold text-xs bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-1.5 transition-colors"
+              className="px-5 py-3 rounded-xl font-bold text-xs bg-white text-slate-950 hover:bg-slate-100 flex items-center justify-center gap-1.5 transition-all shadow-md"
             >
-              <span>Nominator Berikutnya</span>
+              <span>Lanjut ke Nominator Berikutnya</span>
               <ChevronRight className="w-4 h-4" />
+            </Link>
+          ) : (
+            <Link
+              href="/juri"
+              className="px-5 py-3 rounded-xl font-bold text-xs bg-white text-slate-950 hover:bg-slate-100 flex items-center justify-center gap-1.5 transition-all shadow-md"
+            >
+              <span>Selesai & Kembali ke Daftar Peserta</span>
+              <CheckCircle className="w-4 h-4 text-emerald-600" />
             </Link>
           )}
         </div>

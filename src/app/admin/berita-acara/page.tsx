@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useApp } from '@/context/AppContext';
 import { CompetitionType } from '@/types';
-import { ArrowLeft, Printer, Award, FileText, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Printer, Award, FileText, CheckCircle2, Calendar } from 'lucide-react';
 
 export default function BeritaAcaraPage() {
   const { getCategorySummary } = useApp();
@@ -30,7 +30,7 @@ export default function BeritaAcaraPage() {
           <span>Kembali ke Panel Admin</span>
         </Link>
 
-        {/* Category Pickers */}
+        {/* Category Pickers & Date */}
         <div className="flex flex-wrap items-center gap-2">
           <select
             value={selectedComp}
@@ -68,29 +68,66 @@ export default function BeritaAcaraPage() {
             )}
           </select>
 
+          <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-xs">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            <input
+              type="text"
+              value={eventDate}
+              onChange={(e) => setEventDate(e.target.value)}
+              placeholder="Tanggal Berita Acara"
+              className="bg-transparent border-none text-xs font-semibold text-slate-800 focus:outline-none w-44"
+            />
+          </div>
+
           <button
             onClick={handlePrint}
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md shadow-blue-500/20 transition-all hover:scale-105"
           >
             <Printer className="w-4 h-4" />
-            <span>Cetak Dokumen Resmi (PDF)</span>
+            <span>Cetak Berita Acara (PDF)</span>
           </button>
         </div>
       </div>
 
       {/* Printable Berita Acara Document */}
       <div className="bg-white p-8 sm:p-12 border border-slate-300 rounded-2xl shadow-lg print:border-none print:shadow-none print:p-0 text-slate-900 font-serif">
-        {/* Kop Surat Resmi */}
-        <div className="border-b-4 border-double border-black pb-4 text-center">
-          <h3 className="text-base sm:text-lg font-bold tracking-wider uppercase font-sans">
-            PEMERINTAH KABUPATEN WONOGIRI
-          </h3>
-          <h2 className="text-lg sm:text-xl font-black tracking-wide uppercase font-sans mt-0.5">
-            BADAN PERENCANAAN PEMBANGUNAN DAERAH, PENELITIAN DAN PENGEMBANGAN (BAPPERIDA)
-          </h2>
-          <p className="text-xs font-sans text-slate-600 mt-1">
-            Jl. Pemuda II No. 1 Wonogiri 57615 | Telp: (0273) 321034 | Email: bapperida@wonogirikab.go.id
-          </p>
+        {/* Kop Surat Resmi Sesuai Format Standar Pemkab Wonogiri (24.11.2026_08.31.21_REC) */}
+        <div className="relative pb-2 mb-4">
+          <div className="flex items-center justify-between gap-4">
+            {/* Logo Wonogiri */}
+            <div className="shrink-0 w-24 sm:w-28 flex items-center justify-center">
+              <img
+                src="/logo-wonogiri.png"
+                alt="Logo Pemerintah Kabupaten Wonogiri"
+                className="w-20 sm:w-24 h-auto object-contain"
+              />
+            </div>
+
+            {/* Teks Kop Surat */}
+            <div className="flex-1 text-center font-sans">
+              <h3 className="text-base sm:text-lg font-bold tracking-wider uppercase text-black leading-tight">
+                PEMERINTAH KABUPATEN WONOGIRI
+              </h3>
+              <h2 className="text-lg sm:text-2xl font-black uppercase text-black tracking-wide leading-tight mt-0.5">
+                BADAN PERENCANAAN PEMBANGUNAN,
+                <br />
+                RISET DAN INOVASI DAERAH
+              </h2>
+              <p className="text-[11px] sm:text-xs text-black mt-1 leading-tight font-medium">
+                Jalan Pemuda I Nomor 26, Wonogiri, Jawa Tengah, Kode Pos 57612
+              </p>
+              <p className="text-[11px] sm:text-xs text-black leading-tight font-medium">
+                Telepon (0273)321131 Faksimile (0273) 322102
+              </p>
+              <p className="text-[11px] sm:text-xs text-black leading-tight font-medium">
+                Laman <span className="underline">https://www.bapperida.wonogirikab.go.id</span>, Pos-el bapperida@wonogirikab.go.id
+              </p>
+            </div>
+          </div>
+
+          {/* Garis Ganda Khas Kop Surat Dinas (Garis tebal atas 3px + garis tipis bawah 1px) */}
+          <div className="border-b-[3px] border-black mt-3"></div>
+          <div className="border-b border-black mt-[2px]"></div>
         </div>
 
         {/* Judul Berita Acara */}
@@ -215,6 +252,7 @@ export default function BeritaAcaraPage() {
 
           {/* Mengetahui Kepala BAPPERIDA */}
           <div className="mt-8 pt-4 text-center font-sans text-xs">
+            <p className="text-slate-800 font-semibold mb-1">Wonogiri, 25 November 2026</p>
             <p className="font-semibold text-slate-700">Mengetahui,</p>
             <p className="font-bold uppercase text-slate-900 mt-0.5">KEPALA BAPPERIDA KABUPATEN WONOGIRI</p>
             <div className="h-16"></div>
