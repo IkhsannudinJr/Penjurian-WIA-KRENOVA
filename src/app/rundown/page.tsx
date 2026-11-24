@@ -162,7 +162,7 @@ export default function RundownPage() {
           </div>
 
           <span className="text-xs font-bold px-3 py-1 bg-slate-100 text-slate-700 rounded-full self-start sm:self-auto">
-            Rabu, 25 November 2026 • 08.00 s/d 12.00 WIB
+            Rabu, 25 November 2026 • {activeRoomTeam === 1 ? '09.30 s/d 13.00 WIB (Sesuai Ralat)' : '08.00 s/d 12.00 WIB'}
           </span>
         </div>
 

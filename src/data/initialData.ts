@@ -239,6 +239,8 @@ export const INITIAL_JUDGES: Judge[] = [
 export const INITIAL_NOMINATORS: Nominator[] = [
   // ==========================================
   // TIM 1 (Ruang Graha Perencana 3) - WIA OPD, KECAMATAN, BUMD
+  // Catatan: Jadwal waktu disesuaikan dengan Surat Ralat Sekda Wonogiri
+  // Nomor B/XXXX/000.9/XI/2026 tanggal 23 November 2026 (09.30 s/d 13.00 WIB)
   // ==========================================
   // WIA - OPD
   {
@@ -247,10 +249,10 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     category: 'opd',
     categoryLabel: 'Perangkat Daerah (OPD)',
     orderNumber: 1,
-    name: 'Dinas Sosial Kabupaten Wonogiri',
+    name: 'Dinas Sosial PPKB dan P3A Kabupaten Wonogiri',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '08.00 - 08.15',
+    timeSlot: '09.30 - 09.45',
     scheduleOrder: 1
   },
   {
@@ -262,7 +264,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Wonogiri',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '08.15 - 08.30',
+    timeSlot: '09.45 - 10.00',
     scheduleOrder: 2
   },
   {
@@ -274,7 +276,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Dinas Kearsipan dan Perpustakaan Kabupaten Wonogiri',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '08.30 - 08.45',
+    timeSlot: '10.00 - 10.15',
     scheduleOrder: 3
   },
   {
@@ -286,7 +288,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Badan Penanggulangan Bencana Daerah (BPBD) Kabupaten Wonogiri',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '09.00 - 09.15',
+    timeSlot: '10.15 - 10.30',
     scheduleOrder: 4
   },
   {
@@ -298,7 +300,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Badan Kepegawaian dan Pengembangan Sumber Daya Manusia (BKPSDM) Kab. Wonogiri',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '09.15 - 09.30',
+    timeSlot: '10.30 - 10.45',
     scheduleOrder: 5
   },
 
@@ -312,7 +314,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Kecamatan Girimarto',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '09.30 - 09.45',
+    timeSlot: '10.45 - 11.00',
     scheduleOrder: 6
   },
   {
@@ -324,7 +326,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Kecamatan Batuwarno',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '09.45 - 10.00',
+    timeSlot: '11.00 - 11.15',
     scheduleOrder: 7
   },
   {
@@ -336,7 +338,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Kecamatan Nguntoronadi',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '10.00 - 10.15',
+    timeSlot: '11.15 - 11.30',
     scheduleOrder: 8
   },
   {
@@ -348,7 +350,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Kecamatan Tirtomoyo',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '10.15 - 10.30',
+    timeSlot: '11.30 - 11.45',
     scheduleOrder: 9
   },
   {
@@ -360,7 +362,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Kecamatan Manyaran',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '10.30 - 10.45',
+    timeSlot: '11.45 - 12.00',
     scheduleOrder: 10
   },
 
@@ -374,7 +376,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'PT. BPR Bank Wonogiri (Perseroda)',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '10.45 - 11.00',
+    timeSlot: '12.00 - 12.15',
     scheduleOrder: 11
   },
   {
@@ -386,7 +388,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'PT. BPR BKK Wonogiri (Perseroda)',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '11.00 - 11.15',
+    timeSlot: '12.15 - 12.30',
     scheduleOrder: 12
   },
   {
@@ -398,7 +400,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Perumda Air Minum Giri Tirta Sari',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '11.15 - 11.30',
+    timeSlot: '12.30 - 12.45',
     scheduleOrder: 13
   },
   {
@@ -410,7 +412,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'PT. Giri Aneka Usaha (Perseroda)',
     room: 'Ruang Graha Perencana 3',
     teamId: 1,
-    timeSlot: '11.30 - 11.45',
+    timeSlot: '12.45 - 13.00',
     scheduleOrder: 14
   },
 
