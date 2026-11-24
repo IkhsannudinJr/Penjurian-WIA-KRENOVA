@@ -49,10 +49,10 @@ export default function JuriDashboard() {
             {[1, 2, 3].map((tId) => {
               const teamJudges = judges.filter(j => j.teamId === tId);
               const roomName = tId === 1 
-                ? 'Ruang Graha Perencana 3 (OPD, Kecamatan, BUMD)'
+                ? 'Ruang Graha Perencana 1 (OPD, Kecamatan, BUMD)'
                 : tId === 2 
                 ? 'Ruang Graha Perencana 2 (Korwil, Puskesmas, SMP)'
-                : 'Ruang Graha Perencana 1 (Krenova Pelajar, Masyarakat, Desa)';
+                : 'Ruang Graha Perencana 3 (Krenova Pelajar, Masyarakat, Desa)';
 
               return (
                 <div key={tId} className="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200/80">
@@ -181,9 +181,15 @@ export default function JuriDashboard() {
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
             <span>Rabu, 25 Nov 2026</span>
-            <Link href="/rundown" className="text-blue-600 hover:underline font-semibold">
-              Lihat Rundown Jam
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/timer" className="text-rose-600 hover:underline font-bold flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                <span>Timer</span>
+              </Link>
+              <Link href="/rundown" className="text-blue-600 hover:underline font-semibold">
+                Rundown
+              </Link>
+            </div>
           </div>
         </div>
       </div>

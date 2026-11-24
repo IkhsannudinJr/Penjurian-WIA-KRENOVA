@@ -25,7 +25,7 @@ interface CategoryTab {
 }
 
 const CATEGORY_TABS: CategoryTab[] = [
-  // Tim 1 (Graha Perencana 3)
+  // Tim 1 (Graha Perencana 1)
   { id: 'wia-opd', competition: 'WIA', category: 'opd', label: 'WIA - OPD', teamId: 1 },
   { id: 'wia-kecamatan', competition: 'WIA', category: 'kecamatan', label: 'WIA - Kecamatan', teamId: 1 },
   { id: 'wia-bumd', competition: 'WIA', category: 'bumd', label: 'WIA - BUMD', teamId: 1 },
@@ -35,7 +35,7 @@ const CATEGORY_TABS: CategoryTab[] = [
   { id: 'wia-puskesmas', competition: 'WIA', category: 'puskesmas', label: 'WIA - Puskesmas', teamId: 2 },
   { id: 'wia-pelajar', competition: 'WIA', category: 'pelajar', label: 'WIA - SMP / Pelajar', teamId: 2 },
 
-  // Tim 3 (Graha Perencana 1)
+  // Tim 3 (Graha Perencana 3)
   { id: 'krenova-pelajar', competition: 'KRENOVA', category: 'pelajar', label: 'Krenova - Pelajar', teamId: 3 },
   { id: 'krenova-masyarakat', competition: 'KRENOVA', category: 'masyarakat', label: 'Krenova - Masyarakat', teamId: 3 },
   { id: 'wia-desa', competition: 'WIA', category: 'desa', label: 'WIA - Desa / Kelurahan', teamId: 3 },

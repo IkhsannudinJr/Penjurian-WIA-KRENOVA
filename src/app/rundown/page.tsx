@@ -28,10 +28,10 @@ export default function RundownPage() {
 
   const currentTeamJudges = activeRoomTeam === 1 ? team1Judges : activeRoomTeam === 2 ? team2Judges : team3Judges;
   const currentRoomName = activeRoomTeam === 1 
-    ? 'Ruang Graha Perencana 3 BAPPERIDA' 
+    ? 'Ruang Graha Perencana 1 BAPPERIDA' 
     : activeRoomTeam === 2 
     ? 'Ruang Graha Perencana 2 BAPPERIDA' 
-    : 'Ruang Graha Perencana 1 BAPPERIDA';
+    : 'Ruang Graha Perencana 3 BAPPERIDA';
 
   const roomNominators = nominators
     .filter(n => n.teamId === activeRoomTeam)
@@ -58,13 +58,23 @@ export default function RundownPage() {
           </p>
         </div>
 
-        <button
-          onClick={handlePrint}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-md transition-all self-start sm:self-auto"
-        >
-          <Printer className="w-4 h-4" />
-          <span>Cetak Jadwal Rundown</span>
-        </button>
+        <div className="flex items-center gap-2.5 self-start sm:self-auto">
+          <Link
+            href="/timer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md transition-all hover:scale-105"
+          >
+            <Clock className="w-4 h-4" />
+            <span>Buka Timer</span>
+          </Link>
+
+          <button
+            onClick={handlePrint}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-md transition-all"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Cetak Jadwal Rundown</span>
+          </button>
+        </div>
       </div>
 
       {/* Room Tabs (Hidden on Print) */}
@@ -85,7 +95,7 @@ export default function RundownPage() {
             <span className="text-xs font-bold text-slate-400">14 Presentasi</span>
           </div>
           <h3 className="font-extrabold text-slate-900 text-sm mt-2">
-            Ruang Graha Perencana 3
+            Ruang Graha Perencana 1
           </h3>
           <p className="text-xs text-blue-700 font-semibold mt-0.5">
             OPD • Kecamatan • BUMD
@@ -137,7 +147,7 @@ export default function RundownPage() {
             <span className="text-xs font-bold text-slate-400">15 Presentasi</span>
           </div>
           <h3 className="font-extrabold text-slate-900 text-sm mt-2">
-            Ruang Graha Perencana 1
+            Ruang Graha Perencana 3
           </h3>
           <p className="text-xs text-amber-800 font-semibold mt-0.5">
             Krenova Pelajar • Masyarakat • Desa

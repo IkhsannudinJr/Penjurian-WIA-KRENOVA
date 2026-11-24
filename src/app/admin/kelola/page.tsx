@@ -50,10 +50,10 @@ export default function KelolaPage() {
     if (!judgeName.trim()) return;
 
     const room = judgeTeamId === 1 
-      ? 'Ruang Graha Perencana 3 BAPPERIDA' 
+      ? 'Ruang Graha Perencana 1 BAPPERIDA' 
       : judgeTeamId === 2 
       ? 'Ruang Graha Perencana 2 BAPPERIDA' 
-      : 'Ruang Graha Perencana 1 BAPPERIDA';
+      : 'Ruang Graha Perencana 3 BAPPERIDA';
 
     const assignedCategories = judgeTeamId === 1 
       ? ['opd', 'kecamatan', 'bumd']
@@ -87,10 +87,10 @@ export default function KelolaPage() {
       : 3;
 
     const room = teamId === 1 
-      ? 'Ruang Graha Perencana 3' 
+      ? 'Ruang Graha Perencana 1' 
       : teamId === 2 
       ? 'Ruang Graha Perencana 2' 
-      : 'Ruang Graha Perencana 1';
+      : 'Ruang Graha Perencana 3';
 
     await addNominator({
       competition: nomComp,
@@ -306,9 +306,9 @@ export default function KelolaPage() {
                 onChange={(e) => setJudgeTeamId(Number(e.target.value))}
                 className="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl"
               >
-                <option value={1}>Tim 1 - Ruang Graha Perencana 3 (OPD, Kecamatan, BUMD)</option>
+                <option value={1}>Tim 1 - Ruang Graha Perencana 1 (OPD, Kecamatan, BUMD)</option>
                 <option value={2}>Tim 2 - Ruang Graha Perencana 2 (Korwil, Puskesmas, SMP)</option>
-                <option value={3}>Tim 3 - Ruang Graha Perencana 1 (Krenova Pelajar, Masyarakat, Desa)</option>
+                <option value={3}>Tim 3 - Ruang Graha Perencana 3 (Krenova Pelajar, Masyarakat, Desa)</option>
               </select>
             </div>
 

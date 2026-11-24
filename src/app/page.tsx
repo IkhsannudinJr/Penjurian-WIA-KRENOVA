@@ -14,7 +14,6 @@ import {
   CheckCircle2, 
   ArrowRight,
   Calendar,
-  Clock,
   MapPin,
   Users
 } from 'lucide-react';
@@ -80,7 +79,7 @@ export default function HomePage() {
                 href="/rundown"
                 className="inline-flex items-center gap-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3.5 rounded-xl backdrop-blur-md border border-white/20 transition-all hover:scale-105"
               >
-                <Clock className="w-5 h-5 text-amber-300" />
+                <Calendar className="w-5 h-5 text-amber-300" />
                 <span>Lihat Rundown & Jadwal</span>
               </Link>
             </div>
@@ -115,7 +114,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Room 3 */}
+          {/* Room 1 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 uppercase">
@@ -124,7 +123,7 @@ export default function HomePage() {
               <span className="text-xs font-bold text-slate-400">14 Nominator</span>
             </div>
             <h3 className="font-extrabold text-slate-900 text-base">
-              Ruang Graha Perencana 3
+              Ruang Graha Perencana 1
             </h3>
             <p className="text-xs font-semibold text-blue-700">
               Perangkat Daerah (OPD) • Kecamatan • BUMD
@@ -157,7 +156,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Room 1 */}
+          {/* Room 3 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 uppercase">
@@ -166,7 +165,7 @@ export default function HomePage() {
               <span className="text-xs font-bold text-slate-400">15 Nominator</span>
             </div>
             <h3 className="font-extrabold text-slate-900 text-base">
-              Ruang Graha Perencana 1
+              Ruang Graha Perencana 3
             </h3>
             <p className="text-xs font-semibold text-amber-800">
               Krenova Pelajar • Masyarakat • Desa/Kelurahan

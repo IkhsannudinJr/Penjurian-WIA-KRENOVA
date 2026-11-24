@@ -139,14 +139,14 @@ export const KRENOVA_MASYARAKAT_CRITERIA: Criterion[] = [
 ];
 
 export const INITIAL_JUDGES: Judge[] = [
-  // TIM JURI 1 - Ruang Graha Perencana 3 (OPD, Kecamatan, BUMD)
+  // TIM JURI 1 - Ruang Graha Perencana 1 (OPD, Kecamatan, BUMD)
   {
     id: 'juri-1-1',
     name: 'FX. Pranata, A.P., M.Hum.',
     role: 'Sekretaris Daerah Kabupaten Wonogiri',
     institution: 'Pemerintah Kabupaten Wonogiri',
     teamId: 1,
-    room: 'Ruang Graha Perencana 3 BAPPERIDA',
+    room: 'Ruang Graha Perencana 1 BAPPERIDA',
     assignedCategories: ['opd', 'kecamatan', 'bumd'],
     avatarColor: 'bg-blue-600'
   },
@@ -156,7 +156,7 @@ export const INITIAL_JUDGES: Judge[] = [
     role: 'Guru Besar',
     institution: 'Sekolah Tinggi Agama Buddha Negeri Wonogiri',
     teamId: 1,
-    room: 'Ruang Graha Perencana 3 BAPPERIDA',
+    room: 'Ruang Graha Perencana 1 BAPPERIDA',
     assignedCategories: ['opd', 'kecamatan', 'bumd'],
     avatarColor: 'bg-indigo-600'
   },
@@ -166,7 +166,7 @@ export const INITIAL_JUDGES: Judge[] = [
     role: 'Jurnalis / Reporter',
     institution: 'Solopos',
     teamId: 1,
-    room: 'Ruang Graha Perencana 3 BAPPERIDA',
+    room: 'Ruang Graha Perencana 1 BAPPERIDA',
     assignedCategories: ['opd', 'kecamatan', 'bumd'],
     avatarColor: 'bg-sky-600'
   },
@@ -203,14 +203,14 @@ export const INITIAL_JUDGES: Judge[] = [
     avatarColor: 'bg-green-600'
   },
 
-  // TIM JURI 3 - Ruang Graha Perencana 1 (Desa/Kelurahan, Krenova Pelajar, Krenova Masyarakat)
+  // TIM JURI 3 - Ruang Graha Perencana 3 (Desa/Kelurahan, Krenova Pelajar, Krenova Masyarakat)
   {
     id: 'juri-3-1',
     name: 'Wijiyanto, S.T., M.Eng.Sc.',
     role: 'Dosen Teknik',
     institution: 'Universitas Muhammadiyah Surakarta (UMS)',
     teamId: 3,
-    room: 'Ruang Graha Perencana 1 BAPPERIDA',
+    room: 'Ruang Graha Perencana 3 BAPPERIDA',
     assignedCategories: ['desa', 'pelajar', 'masyarakat'],
     avatarColor: 'bg-amber-600'
   },
@@ -220,7 +220,7 @@ export const INITIAL_JUDGES: Judge[] = [
     role: 'Dosen',
     institution: 'Sekolah Tinggi Agama Buddha Negeri Wonogiri',
     teamId: 3,
-    room: 'Ruang Graha Perencana 1 BAPPERIDA',
+    room: 'Ruang Graha Perencana 3 BAPPERIDA',
     assignedCategories: ['desa', 'pelajar', 'masyarakat'],
     avatarColor: 'bg-orange-600'
   },
@@ -230,7 +230,7 @@ export const INITIAL_JUDGES: Judge[] = [
     role: 'Program Fasilitator',
     institution: 'Djarum Foundation',
     teamId: 3,
-    room: 'Ruang Graha Perencana 1 BAPPERIDA',
+    room: 'Ruang Graha Perencana 3 BAPPERIDA',
     assignedCategories: ['desa', 'pelajar', 'masyarakat'],
     avatarColor: 'bg-rose-600'
   }
@@ -238,7 +238,7 @@ export const INITIAL_JUDGES: Judge[] = [
 
 export const INITIAL_NOMINATORS: Nominator[] = [
   // ==========================================
-  // TIM 1 (Ruang Graha Perencana 3) - WIA OPD, KECAMATAN, BUMD
+  // TIM 1 (Ruang Graha Perencana 1) - WIA OPD, KECAMATAN, BUMD
   // Catatan: Jadwal waktu disesuaikan dengan Surat Ralat Sekda Wonogiri
   // Nomor B/XXXX/000.9/XI/2026 tanggal 23 November 2026 (09.30 s/d 13.00 WIB)
   // ==========================================
@@ -250,7 +250,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Perangkat Daerah (OPD)',
     orderNumber: 1,
     name: 'Dinas Sosial PPKB dan P3A Kabupaten Wonogiri',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '09.30 - 09.45',
     scheduleOrder: 1
@@ -262,7 +262,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Perangkat Daerah (OPD)',
     orderNumber: 2,
     name: 'Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Wonogiri',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '09.45 - 10.00',
     scheduleOrder: 2
@@ -274,7 +274,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Perangkat Daerah (OPD)',
     orderNumber: 3,
     name: 'Dinas Kearsipan dan Perpustakaan Kabupaten Wonogiri',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '10.00 - 10.15',
     scheduleOrder: 3
@@ -286,7 +286,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Perangkat Daerah (OPD)',
     orderNumber: 4,
     name: 'Badan Penanggulangan Bencana Daerah (BPBD) Kabupaten Wonogiri',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '10.15 - 10.30',
     scheduleOrder: 4
@@ -298,7 +298,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Perangkat Daerah (OPD)',
     orderNumber: 5,
     name: 'Badan Kepegawaian dan Pengembangan Sumber Daya Manusia (BKPSDM) Kab. Wonogiri',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '10.30 - 10.45',
     scheduleOrder: 5
@@ -312,7 +312,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Kecamatan',
     orderNumber: 1,
     name: 'Kecamatan Girimarto',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '10.45 - 11.00',
     scheduleOrder: 6
@@ -324,7 +324,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Kecamatan',
     orderNumber: 2,
     name: 'Kecamatan Batuwarno',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '11.00 - 11.15',
     scheduleOrder: 7
@@ -336,7 +336,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Kecamatan',
     orderNumber: 3,
     name: 'Kecamatan Nguntoronadi',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '11.15 - 11.30',
     scheduleOrder: 8
@@ -348,7 +348,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Kecamatan',
     orderNumber: 4,
     name: 'Kecamatan Tirtomoyo',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '11.30 - 11.45',
     scheduleOrder: 9
@@ -360,7 +360,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'Kecamatan',
     orderNumber: 5,
     name: 'Kecamatan Manyaran',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '11.45 - 12.00',
     scheduleOrder: 10
@@ -374,7 +374,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'BUMD',
     orderNumber: 1,
     name: 'PT. BPR Bank Wonogiri (Perseroda)',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '12.00 - 12.15',
     scheduleOrder: 11
@@ -386,7 +386,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'BUMD',
     orderNumber: 2,
     name: 'PT. BPR BKK Wonogiri (Perseroda)',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '12.15 - 12.30',
     scheduleOrder: 12
@@ -398,7 +398,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'BUMD',
     orderNumber: 3,
     name: 'Perumda Air Minum Giri Tirta Sari',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '12.30 - 12.45',
     scheduleOrder: 13
@@ -410,7 +410,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     categoryLabel: 'BUMD',
     orderNumber: 4,
     name: 'PT. Giri Aneka Usaha (Perseroda)',
-    room: 'Ruang Graha Perencana 3',
+    room: 'Ruang Graha Perencana 1',
     teamId: 1,
     timeSlot: '12.45 - 13.00',
     scheduleOrder: 14
@@ -606,7 +606,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
   },
 
   // ==========================================
-  // TIM 3 (Ruang Graha Perencana 1) - KRENOVA PELAJAR, KRENOVA MASYARAKAT, DESA/KELURAHAN
+  // TIM 3 (Ruang Graha Perencana 3) - KRENOVA PELAJAR, KRENOVA MASYARAKAT, DESA/KELURAHAN
   // ==========================================
   // Krenova Pelajar
   {
@@ -619,7 +619,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     description: 'Inovasi Olahan Pangan Mie Bakso Berbasis Ikan Nila dan Tepung Gaplek untuk Mewujudkan Pangan Lokal yang Inovatif dan Bernilai Tambah',
     name: 'WINDA OKTAVI NAILATUL IZZAH',
     institution: 'SMA 2 Wonogiri',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '08.00 - 08.15',
     scheduleOrder: 1
@@ -634,7 +634,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     description: 'Inovasi Material Sintensis Green Composite Berbasis Silika Sekam Padi Limbah Agro-Industri Jawa Tengah dan Aplikasi Kalsium Residu Cangkang Telur Program MBG Guna Mewujudkan Paving Block Berdaya Serap Tinggi',
     name: 'Syawalia Nur Azahro',
     institution: 'SMA 1 Purwantoro',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '08.15 - 08.30',
     scheduleOrder: 2
@@ -649,7 +649,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     description: 'Pemanfaatan Bio-Enzim dari Limbah MBG sebagai Bahan Dasar Pembuatan Shampo Hewan Ramah Lingkungan',
     name: 'Salsabila Hariyanto',
     institution: 'SMK Muhammadiyah 2 Wuryantoro',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '08.30 - 08.45',
     scheduleOrder: 3
@@ -664,7 +664,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     description: 'Inovasi Pengolahan Cokelat Lokal Berbasis Potensi Kakao Wonogiri',
     name: 'WAHYU IKA RAMADANI',
     institution: 'SMA N 1 Baturetno',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '09.00 - 09.15',
     scheduleOrder: 4
@@ -679,7 +679,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     description: 'Pemanfaatan Biji Alpukat dan Residu Cangkang Telur Alami',
     name: 'Keyla Enggar Pramulya',
     institution: 'SMA 1 Slogohimo',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '09.15 - 09.30',
     scheduleOrder: 5
@@ -697,7 +697,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Riyanto',
     teamMembers: ['Tanti Purwaningrum', 'Titik Ismulyanti', 'Irfan Mahmud Mustofa', 'Fahmi Fitrotul Ummah'],
     institution: 'Masyarakat Wonogiri',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '09.30 - 09.45',
     scheduleOrder: 6
@@ -712,7 +712,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     description: 'Konversi dan rekayasa mesin mixer makanan berbasis tenaga motor listrik baterai hemat energi',
     name: 'Adzin Kondo Nurbuwat',
     institution: 'Masyarakat Wonogiri',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '09.45 - 10.00',
     scheduleOrder: 7
@@ -727,7 +727,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     description: 'Inovasi hilirisasi kakao lokal menjadi produk bernilai ekonomi tinggi di Girimarto',
     name: 'Hariyanto',
     institution: 'Girimarto, Wonogiri',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '10.00 - 10.15',
     scheduleOrder: 8
@@ -743,7 +743,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Musfiq Amrulloh, S.Pd.',
     teamMembers: ['Lathifah Safiinatun Najaah, M.Pd.'],
     institution: 'Wonogiri',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '10.15 - 10.30',
     scheduleOrder: 9
@@ -759,7 +759,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     name: 'Eva Marlina',
     teamMembers: ['Endang Widati', 'Yopi Harminto', 'Triyono'],
     institution: 'Wonogiri',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '10.30 - 10.45',
     scheduleOrder: 10
@@ -774,7 +774,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     orderNumber: 1,
     name: 'Desa Gemawang',
     institution: 'Kecamatan Girimarto',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '10.45 - 11.00',
     scheduleOrder: 11
@@ -787,7 +787,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     orderNumber: 2,
     name: 'Desa Kulurejo',
     institution: 'Kecamatan Nguntoronadi',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '11.00 - 11.15',
     scheduleOrder: 12
@@ -800,7 +800,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     orderNumber: 3,
     name: 'Desa Slogoretno',
     institution: 'Kecamatan Jatipurno',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '11.15 - 11.30',
     scheduleOrder: 13
@@ -813,7 +813,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     orderNumber: 4,
     name: 'Desa Selorejo',
     institution: 'Kecamatan Girimarto',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '11.30 - 11.45',
     scheduleOrder: 14
@@ -826,7 +826,7 @@ export const INITIAL_NOMINATORS: Nominator[] = [
     orderNumber: 5,
     name: 'Desa Gebang',
     institution: 'Kecamatan Nguntoronadi',
-    room: 'Ruang Graha Perencana 1',
+    room: 'Ruang Graha Perencana 3',
     teamId: 3,
     timeSlot: '11.45 - 12.00',
     scheduleOrder: 15

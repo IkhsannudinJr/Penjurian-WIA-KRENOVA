@@ -61,6 +61,18 @@ export default function Navbar() {
             </Link>
 
             <Link
+              href="/timer"
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors ${
+                pathname === '/timer'
+                  ? 'bg-rose-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              }`}
+            >
+              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-500 shrink-0" />
+              <span>Timer</span>
+            </Link>
+
+            <Link
               href="/juri"
               className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors ${
                 pathname.startsWith('/juri')
